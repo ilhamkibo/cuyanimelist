@@ -4,6 +4,8 @@ import Image from "next/image";
 import CollectionButton from "@/components/AnimeList/CollectionButton";
 import { authUserSession } from "@/libs/auth-libs";
 import prisma from "@/libs/prisma";
+import CommentInput from "@/components/AnimeList/CommentInput";
+import CommentBox from "@/components/AnimeList/CommentBox";
 
 export default async function Page({ params: { id } }) {
   const anime = await getAnimeResponse(`anime/${id}`);
@@ -21,6 +23,8 @@ export default async function Page({ params: { id } }) {
         {user && (
           <CollectionButton
             anime_mal_id={id}
+            anime_image={anime.data.images.webp.image_url}
+            anime_title={anime.data.title}
             user_email={user?.email}
             collection={collection}
           />
@@ -53,6 +57,18 @@ export default async function Page({ params: { id } }) {
           className="w-full rounded object-cover"
         />
         <p className="text-justify text-xl">{anime.data.synopsis}</p>
+      </div>
+      <div className="p-4">
+        <h1 className="text-2xl text-color-primary">Komentar Warga</h1>
+        <CommentBox anime_mal_id={id} />
+        {user && (
+          <CommentInput
+            anime_mal_id={id}
+            user_email={user?.email}
+            username={user?.name}
+            anime_title={anime.data.title}
+          />
+        )}
       </div>
       <div>
         <VideoPlayer youtubeId={anime.data.trailer.youtube_id} />

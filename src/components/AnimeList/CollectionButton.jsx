@@ -3,13 +3,20 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function CollectionButton({collection, anime_mal_id, user_email, text }) {
+export default function CollectionButton({
+  collection,
+  anime_mal_id,
+  user_email,
+  anime_image,
+  anime_title,
+}) {
   const [isCreated, setIsCreated] = useState(false);
   const router = useRouter();
+
   const handleCollection = async (event) => {
     event.preventDefault();
 
-    const data = { anime_mal_id, user_email };
+    const data = { anime_mal_id, user_email, anime_image, anime_title };
 
     const response = await fetch("/api/v1/collection", {
       method: "POST",
